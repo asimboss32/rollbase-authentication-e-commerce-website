@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Customer\CustomerController;
+use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\Frontend\LoginController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,3 +35,35 @@ Route::get('/category-products',[FrontendController::class,'categoryProducts']);
 Route::get('/subcategory-products',[FrontendController::class,'subCategoryProducts']);
 Route::get('/type-products',[FrontendController::class,'typeProducts']);
 
+//Login and Register Routes
+
+Route::get('/admin/login',[LoginController::class,'adminLogin']);
+Route::post('/admin/login/auth', [LoginController::class, 'adminLoginAuth']); //jehetu form submit hobe tai eta post method
+
+//employee
+Route::get('/employee/login',[LoginController::class,'employeeLogin']);
+Route::post('/employee/login/auth', [LoginController::class, 'employeeLoginAuth']);
+
+//customer
+Route::get('/customer/login',[LoginController::class,'customerLogin']);
+Route::post('/customer/login/auth', [LoginController::class, 'customerLoginAuth']);
+
+Auth::routes(['login' => false, 'register' => false]); //default auth routes gulo disable kora holo karon amra custom login and register route use korchi.
+
+//Admin and Employee Dashboard Routes with Role Middleware
+route::middleware(['role:admin'])->group(function(){  //eta middleware group jekhane  role middleware use kora hocche. mane je route gulo er moddhe thakbe segulo access korte hole user ke login thakte hobe and tar role admin hote hobe.
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']); //admin dashboard route jekhane admin login korar por niye jabe.
+    route::get('/admin/logout',[AdminController::class,'adminLogout']); //admin logout route jekhane admin logout korar por niye jabe.
+});
+
+//employee
+route::middleware(['role:employee'])->group(function(){ 
+    Route::get('/employee/dashboard', [EmployeeController::class, 'dashboard']); 
+    route::get('/employee/logout',[EmployeeController::class,'employeeLogout']); 
+});
+
+//customer
+route::middleware(['role:customer'])->group(function(){ 
+    Route::get('/customer/dashboard', [CustomerController::class, 'dashboard']); 
+    route::get('/customer/logout',[CustomerController::class,'customerLogout']); 
+});
