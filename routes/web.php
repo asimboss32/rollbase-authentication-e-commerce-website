@@ -49,10 +49,12 @@ Route::post('/employee/login/auth', [LoginController::class, 'employeeLoginAuth'
 //customer
 Route::get('/customer/login',[LoginController::class,'customerLogin']);
 Route::post('/customer/login/auth', [LoginController::class, 'customerLoginAuth']);
+Route::get('/customer/registration', [LoginController::class, 'customerRegistration']);
+Route::post('/customer/registration-store', [LoginController::class, 'customerRegistrationStore']);
 
 Auth::routes(['login' => false, 'register' => false]); //default auth routes gulo disable kora holo karon amra custom login and register route use korchi.
 
-//Admin and Employee Dashboard Routes with Role Middleware
+//Admin Dashboard Routes with Role Middleware
 route::middleware(['role:admin'])->group(function(){  //eta middleware group jekhane  role middleware use kora hocche. mane je route gulo er moddhe thakbe segulo access korte hole user ke login thakte hobe and tar role admin hote hobe.
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']); //admin dashboard route jekhane admin login korar por niye jabe.
     route::get('/admin/logout',[AdminController::class,'adminLogout']); //admin logout route jekhane admin logout korar por niye jabe.
@@ -84,4 +86,6 @@ route::middleware(['role:employee'])->group(function(){
 route::middleware(['role:customer'])->group(function(){ 
     Route::get('/customer/dashboard', [CustomerController::class, 'dashboard']); 
     route::get('/customer/logout',[CustomerController::class,'customerLogout']); 
+    route::get('/customer/profile-view',[CustomerController::class,'customerProfileView']);
+    route::post('/customer/profile-update',[CustomerController::class,'customerProfileUpdate']);
 });
