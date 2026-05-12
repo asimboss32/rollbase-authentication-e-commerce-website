@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
     public function index()
     {
-        return view('frontend.index');
+        $hotProducts = Product::where('status','active')->where('product_type','hot')->paginate(12);
+        $newProducts = Product::where('status','active')->where('product_type','new')->paginate(12);
+        $regularProducts = Product::where('status','active')->where('product_type','regular')->paginate(12);
+        $discountProducts = Product::where('status','active')->where('product_type','discount')->paginate(12);
 
+        return view('frontend.index', compact('hotProducts', 'newProducts', 'regularProducts', 'discountProducts'));
     }
 
     public function shopProducts()
@@ -18,9 +24,13 @@ class FrontendController extends Controller
         return view('frontend.shop');
     }
 
-    public function productDetails()
+    public function productDetails($id)
     {
-        return view('frontend.product-details');
+        $product = Product::with('color','size','galleryImages','review')->where('id',$id)->first();
+
+        $detailsPageCategories = Category::get();
+        
+        return view('frontend.product-details', compact('product', 'detailsPageCategories'));
     }
 
     public function privacyPolicy()

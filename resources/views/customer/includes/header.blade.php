@@ -77,7 +77,7 @@
                     </div><a class="dropdown-item" href="{{url('/customer/profile-view')}}">
                         <svg class="icon me-2">
                             <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
-                        </svg> Profile</a><a class="dropdown-item" href="#">
+                        </svg> Profile</a><a class="dropdown-item" href="{{url('/customer/credentials-view')}}">
                         <svg class="icon me-2">
                             <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
                         </svg> Credential Settings</a><a class="dropdown-item" href="#">

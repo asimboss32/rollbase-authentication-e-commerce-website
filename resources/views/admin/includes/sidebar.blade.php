@@ -88,13 +88,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="{{url('/manage/product-list')}}" class="nav-link active">
+                    <a href="{{url('/manage/product/list')}}" class="nav-link active">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>List</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{url('/manage/product-create')}}" class="nav-link">
+                    <a href="{{url('/manage/product/create')}}" class="nav-link">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Add New</p>
                     </a>
@@ -102,6 +102,29 @@
                 </ul>
               </li>
 
+               <li class="nav-item">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon bi bi-speedometer"></i>
+                  <p>
+                    General Settings
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{url('/manage/website-settings')}}" class="nav-link active">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Website Settings</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{url('/manage/website-policy')}}" class="nav-link">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Website Policies</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
               <li class="nav-item">
                 <a href="{{url('/admin/logout')}}" class="nav-link">
                   <i class="nav-icon bi bi-palette"></i>

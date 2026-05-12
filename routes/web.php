@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Employee\EmployeeController;
@@ -23,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[FrontendController::class,'index']);
 Route::get('/shop',[FrontendController::class,'shopProducts']);
-Route::get('/product-details',[FrontendController::class,'productDetails']);
+Route::get('/product-details/{id}',[FrontendController::class,'productDetails']);
 Route::get('/privacy-policy',[FrontendController::class,'privacyPolicy']);
 Route::get('/terms-conditions',[FrontendController::class,'termsConditions']);
 Route::get('/refund-policy',[FrontendController::class,'refundPolicy']);
@@ -35,7 +37,7 @@ Route::get('/checkout',[FrontendController::class,'checkOut']);
 Route::get('/order-confirmation',[FrontendController::class,'orderConfirmation']);
 Route::get('/category-products',[FrontendController::class,'categoryProducts']);
 Route::get('/subcategory-products',[FrontendController::class,'subCategoryProducts']);
-Route::get('/type-products',[FrontendController::class,'typeProducts']);
+Route::get('/type-products/{type}',[FrontendController::class,'typeProducts']);
 
 //Login and Register Routes
 
@@ -74,6 +76,15 @@ route::middleware(['role:admin'])->group(function(){  //eta middleware group jek
     Route::get('/manage/subcategory/edit/{id}', [SubCategoryController::class, 'editSubCategory']);
     Route::post('/manage/subcategory/update/{id}', [SubCategoryController::class, 'updateSubCategory']);
     Route::get('/manage/subcategory/delete/{id}', [SubCategoryController::class, 'deleteSubCategory']);
+
+     //Products Routes
+    Route::get('/manage/product/create', [ProductController::class, 'createProduct']);
+    Route::post('/manage/product/store', [productController::class, 'storeProduct']);
+    Route::get('/manage/product/list', [productController::class, 'listProduct']);
+    Route::get('/manage/product/edit/{id}', [productController::class, 'editProduct']);
+    Route::post('/manage/product/update/{id}', [productController::class, 'updateProduct']);
+    Route::get('/manage/product/delete/{id}', [productController::class, 'deleteProduct']);
+    Route::get('/manage/product/status/{id}', [ProductController::class, 'changeStatus']);
 });
 
 //employee
@@ -88,4 +99,15 @@ route::middleware(['role:customer'])->group(function(){
     route::get('/customer/logout',[CustomerController::class,'customerLogout']); 
     route::get('/customer/profile-view',[CustomerController::class,'customerProfileView']);
     route::post('/customer/profile-update',[CustomerController::class,'customerProfileUpdate']);
+    route::get('/customer/credentials-view',[CustomerController::class,'customerCredentialsView']);
+    route::post('/customer/credentials-update',[CustomerController::class,'customerCredentialsUpdate']);
+
+});
+
+Route::middleware(['role:employee,admin'])->group(function(){
+    Route::get('/manage/website-settings', [SettingController::class, 'manageSetting']);
+    Route::post('/manage/website-settings/update', [SettingController::class, 'updateSetting']);
+
+    Route::get('/manage/website-policy', [SettingController::class, 'managePolicy']);
+    Route::post('/manage/website-policy/update', [SettingController::class, 'updatePolicy']);
 });

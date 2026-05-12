@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="input-group mb-3">
-                    <input type="file" name="image" class="form-control">
+                    <input type="file" name="image" class="form-control" accept="image/*">
                 </div>
                 @if ($authUser->image != null)
                     <img src="{{$authUser->image}}" width="100" height="100">
