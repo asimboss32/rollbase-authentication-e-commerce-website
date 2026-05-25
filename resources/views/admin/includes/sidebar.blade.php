@@ -101,6 +101,29 @@
                   </li>
                 </ul>
               </li>
+                  <li class="nav-item">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon bi bi-speedometer"></i>
+                  <p>
+                    Product Review
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{url('/manage/review-list')}}" class="nav-link active">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>List</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{url('/manage/review-create')}}" class="nav-link">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Add New</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
 
                <li class="nav-item">
                 <a href="#" class="nav-link active">
@@ -124,6 +147,12 @@
                     </a>
                   </li>
                 </ul>
+              </li>
+              <li class="nav-item">
+                <a href="{{url('/manage/contact-messages')}}" class="nav-link">
+                  <i class="nav-icon bi bi-palette"></i>
+                  <p>Contact Messages</p>
+                </a>
               </li>
               <li class="nav-item">
                 <a href="{{url('/admin/logout')}}" class="nav-link">

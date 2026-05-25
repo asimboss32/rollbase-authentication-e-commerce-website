@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\contactMessageController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Customer\CustomerController;
@@ -25,19 +27,25 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[FrontendController::class,'index']);
 Route::get('/shop',[FrontendController::class,'shopProducts']);
-Route::get('/product-details/{id}',[FrontendController::class,'productDetails']);
+Route::get('/product-details/{slug}',[FrontendController::class,'productDetails']);
 Route::get('/privacy-policy',[FrontendController::class,'privacyPolicy']);
 Route::get('/terms-conditions',[FrontendController::class,'termsConditions']);
 Route::get('/refund-policy',[FrontendController::class,'refundPolicy']);
 Route::get('/payment-policy',[FrontendController::class,'paymentPolicy']);
 Route::get('/about-us',[FrontendController::class,'aboutUs']);
 Route::get('/contact-us',[FrontendController::class,'contactUs']);
+Route::post('/contact-messages/store', [FrontendController::class, 'contactMessageStore']);
 Route::get('/view-cart',[FrontendController::class,'viewCart']);
 Route::get('/checkout',[FrontendController::class,'checkOut']);
 Route::get('/order-confirmation',[FrontendController::class,'orderConfirmation']);
 Route::get('/category-products',[FrontendController::class,'categoryProducts']);
 Route::get('/subcategory-products',[FrontendController::class,'subCategoryProducts']);
 Route::get('/type-products/{type}',[FrontendController::class,'typeProducts']);
+
+//order routes
+Route::post('add-cart-details/{id}',[FrontendController::class,'addToCartDetailsPage']);
+Route::get('add-cart/{id}',[FrontendController::class,'addToCart']);
+Route::get('/delete-cart/{id}', [FrontendController::class, 'deleteCart']);
 
 //Login and Register Routes
 
@@ -85,6 +93,10 @@ route::middleware(['role:admin'])->group(function(){  //eta middleware group jek
     Route::post('/manage/product/update/{id}', [productController::class, 'updateProduct']);
     Route::get('/manage/product/delete/{id}', [productController::class, 'deleteProduct']);
     Route::get('/manage/product/status/{id}', [ProductController::class, 'changeStatus']);
+
+     //Contact Message Routes...
+    Route::get('/manage/contact-messages', [contactMessageController::class, 'getContactMessages']);
+    Route::get('/delete/contact-message/{id}', [contactMessageController::class, 'deleteContactMessage']);
 });
 
 //employee
@@ -110,4 +122,12 @@ Route::middleware(['role:employee,admin'])->group(function(){
 
     Route::get('/manage/website-policy', [SettingController::class, 'managePolicy']);
     Route::post('/manage/website-policy/update', [SettingController::class, 'updatePolicy']);
+
+    //review routs
+    Route::get('/manage/review-list', [ReviewController::class, 'reviewList']);
+    Route::get('/manage/review-create', [ReviewController::class, 'reviewCreate']);
+    Route::post('/manage/review-store', [ReviewController::class, 'reviewStore']);
+    Route::get('/manage/review-edit/{id}', [ReviewController::class, 'reviewEdit']);
+    Route::post('/manage/review-update/{id}', [ReviewController::class, 'reviewUpdate']);
+    Route::get('/manage/review-delete/{id}', [ReviewController::class, 'reviewDelete']);
 });

@@ -2,7 +2,7 @@
 
 @section('content')
     <main>
-		<section class="product-details-section">
+        <section class="product-details-section">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9 col-md-12">
@@ -13,14 +13,14 @@
                                         <div class="slider slider-content">
                                             @foreach ($product->galleryImages as $image)
                                                 <div>
-                                                    <img src="{{$image->image }}" alt="slider images">
+                                                    <img src="{{ $image->image }}" alt="slider images">
                                                 </div>
                                             @endforeach
                                         </div>
                                         <div class="slider slider-thumb">
                                             @foreach ($product->galleryImages as $image)
                                                 <div>
-                                                    <img src="{{$image->image }}" alt="slider images">
+                                                    <img src="{{ $image->image }}" alt="slider images">
                                                 </div>
                                             @endforeach
                                         </div>
@@ -29,49 +29,56 @@
                                 <div class="col-lg-5 col-md-5">
                                     <div class="product-details-content">
                                         <h3 class="product-name">
-                                            {{$product->name}}
+                                            {{ $product->name }}
                                         </h3>
                                         <div class="product-price">
-                                            <span>{{$product->discount_price}} Tk.</span>
+                                            <span>{{ $product->discount_price }} Tk.</span>
                                             <span class="" style="color: #f74b81;">
-                                                <del>{{$product->regular_price}} Tk.</del>
+                                                <del>{{ $product->regular_price }} Tk.</del>
                                             </span>
                                         </div>
-                                        <div class="product-details-select-items-wrap">
-                                            @foreach ($product->color as $color)
-                                                <div class="product-details-select-item-outer">
-                                                <input type="radio" name="color" id="color" value="Red" class="category-item-radio">
-                                                <label for="color" class="category-item-label">
-                                                    {{$color->color_name}}
-                                                </label>
+                                        <form action="{{ url('add-cart-details/' . $product->id) }}" method="POST">
+                                            @csrf
+                                            <div class="product-details-select-items-wrap">
+                                                @foreach ($product->color as $color)
+                                                    <div class="product-details-select-item-outer">
+                                                        <input type="radio" name="color" id="color" value="Red"
+                                                            class="category-item-radio">
+                                                        <label for="color" class="category-item-label">
+                                                            {{ $color->color_name }}
+                                                        </label>
+                                                    </div>
+                                                @endforeach
                                             </div>
-                                            @endforeach
-                                        </div>
-                                        <div class="product-details-select-items-wrap">
-                                           @foreach ($product->size as $size)
-                                              <div class="product-details-select-item-outer">
-                                                <input type="radio" name="size" value="XXl" class="category-item-radio">
-                                                <label for="size" class="category-item-label">{{$size->size_name}}</label>
-                                            </div>  
-                                           @endforeach
-                                        </div>
-                                        <form action="" method="POST">
+                                            <div class="product-details-select-items-wrap">
+                                                @foreach ($product->size as $size)
+                                                    <div class="product-details-select-item-outer">
+                                                        <input type="radio" name="size" value="XXl"
+                                                            class="category-item-radio">
+                                                        <label for="size"
+                                                            class="category-item-label">{{ $size->size_name }}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                             <div class="purchase-info-outer">
                                                 <div class="product-incremnt-decrement-outer" style="display: block">
                                                     <a title="Decrement" class="decrement-btn" style="margin-top: -10px;">
                                                         <i class="fas fa-minus"></i>
                                                     </a>
-                                                    <input type="number" readonly name="qty" placeholder="Qty" value="1" min="1" id="qty" style="height: 35px">
+                                                    <input type="number" readonly name="qty" placeholder="Qty"
+                                                        value="1" min="1" id="qty" style="height: 35px">
                                                     <a title="Increment" class="increment-btn" style="margin-top: -10px;">
                                                         <i class="fas fa-plus"></i>
                                                     </a>
                                                 </div>
                                                 <div>
-                                                    <button type="submit" name="action" value="addToCart" id="addToCart" class="cart-btn-inner">
+                                                    <button type="submit" name="action" value="addToCart" id="addToCart"
+                                                        class="cart-btn-inner">
                                                         <i class="fas fa-shopping-cart"></i>
                                                         Add to Cart
                                                     </button>
-                                                    <button type="submit" name="action" value="buyNow" id="buyNow" class="cart-btn-inner">
+                                                    <button type="submit" name="action" value="buyNow" id="buyNow"
+                                                        class="cart-btn-inner">
                                                         <i class="fas fa-truck"></i>
                                                         Quick Order
                                                     </button>
@@ -88,50 +95,73 @@
                             <div class="product-details-info">
                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="pills-description-tab" data-bs-toggle="pill" data-bs-target="#pills-description" type="button" role="tab" aria-controls="pills-description" aria-selected="true">
+                                        <button class="nav-link active" id="pills-description-tab" data-bs-toggle="pill"
+                                            data-bs-target="#pills-description" type="button" role="tab"
+                                            aria-controls="pills-description" aria-selected="true">
                                             Description
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="pills-review-tab" data-bs-toggle="pill" data-bs-target="#pills-review" type="button" role="tab" aria-controls="pills-review" aria-selected="true">
+                                        <button class="nav-link" id="pills-review-tab" data-bs-toggle="pill"
+                                            data-bs-target="#pills-review" type="button" role="tab"
+                                            aria-controls="pills-review" aria-selected="true">
                                             Review
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="pills-policy-tab" data-bs-toggle="pill" data-bs-target="#pills-policy" type="button" role="tab" aria-controls="pills-policy" aria-selected="true">
+                                        <button class="nav-link" id="pills-policy-tab" data-bs-toggle="pill"
+                                            data-bs-target="#pills-policy" type="button" role="tab"
+                                            aria-controls="pills-policy" aria-selected="true">
                                             Product Policy
                                         </button>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="pills-tabContent">
-                                    <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
+                                    <div class="tab-pane fade show active" id="pills-description" role="tabpanel"
+                                        aria-labelledby="pills-description-tab">
                                         {!! $product->description !!}
                                     </div>
-                                    <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
-                                        <div class="review-item-wrapper">
+                                    <div class="tab-pane fade" id="pills-review" role="tabpanel"
+                                        aria-labelledby="pills-review-tab">
+
+                                        @foreach ($product->review as $review)
+                                            <div class="review-item-wrapper">
                                             <div class="review-item-left">
-                                                <i class="fas fa-user"></i>
+                                               @if ($review->image != null)
+                                                    <img src="{{$review->image}}" height="50" width="50">
+                                                    @else
+                                                    <i class="fas fa-user"></i>
+                                                @endif
                                             </div>
                                             <div class="review-item-right">
                                                 <h4 class="review-author-name">
-                                                    Saidul Islam 
-                                                    <span class=" d-inline bg-danger badge-sm badge text-white">Verified</span>
+                                                   {{ $review->customer_name}}
+                                                    <span
+                                                        class=" d-inline bg-danger badge-sm badge text-white">Verified</span>
                                                 </h4>
                                                 <p class="review-item-message">
-                                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officiis minus, ut unde laudantium accusamus odio nam officia aperiam excepturi quis nesciunt eveniet eligendi.
+                                                    {{ $review->comments }}
                                                 </p>
+
                                                 <span class="review-item-rating-stars">
-                                                    <i class="fa-star fas"></i>
-                                                    <i class="fa-star fas"></i>
-                                                    <i class="fa-star fas"></i>
-                                                    <i class="fa-star fas"></i>
-                                                    <i class="fa-star fas"></i>
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $review->rating)
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    @else
+                                                        <i class="far fa-star text-muted"></i>
+                                                    @endif
+                                                @endfor
+
                                                 </span>
+                                                
                                             </div>
                                         </div>
+                                        @endforeach
+                                        
                                     </div>
-                                    <div class="tab-pane fade" id="pills-policy" role="tabpanel" aria-labelledby="pills-policy-tab">
-                                       {!! $product->product_policy !!}
+                                    <div class="tab-pane fade" id="pills-policy" role="tabpanel"
+                                        aria-labelledby="pills-policy-tab">
+                                        {!! $product->product_policy !!}
                                     </div>
                                 </div>
                             </div>
@@ -145,9 +175,9 @@
                                 </h3>
                                 @foreach ($detailsPageCategories as $category)
                                     <a href="#" class="category-item-outer">
-                                    <img src="{{$category->image}}" alt="category image">
-                                    {{ $category->name }}
-                                </a>
+                                        <img src="{{ $category->image }}" alt="category image">
+                                        {{ $category->name }}
+                                    </a>
                                 @endforeach
                             </div>
                         </div>
@@ -155,6 +185,25 @@
                 </div>
             </div>
         </section>
-	</main>
-
+    </main>
 @endsection
+
+@push('script')
+    <script>
+        let qtyInput = document.getElementById('qty');
+        let incrementBtn = document.querySelector('.increment-btn');
+        let decrementBtn = document.querySelector('.decrement-btn');
+
+        incrementBtn.addEventListener('click', function() {
+            if (parseInt(qtyInput.value) < 10) {
+                qtyInput.value = parseInt(qtyInput.value) + 1;
+            }
+        });
+
+        decrementBtn.addEventListener('click', function() {
+            if (parseInt(qtyInput.value) > 1) {
+                qtyInput.value = parseInt(qtyInput.value) - 1;
+            }
+        });
+    </script>
+@endpush

@@ -30,7 +30,7 @@
 					</div>
 					<div class="home__slider-items-wrapper">
 						<div class="home__slider-item-outer">
-							<img src="{{asset('frontend/assets/images/slider.jpg')}}" alt="image" class="home__slider-item-image">
+							<img src="{{ $globalSiteSettings->hero_image}}" alt="image" class="home__slider-item-image">
 						</div>
 					</div>
 				</div>
@@ -103,11 +103,11 @@
 					@foreach ($hotProducts as $product)
 						<div class="product__item-outer">
 						<div class="product__item-image-outer">
-							<a href="{{url('/product-details/'.$product->id)}}" class="product__item-image-inner">
+							<a href="{{url('/product-details/'.$product->slug)}}" class="product__item-image-inner">
 								<img src="{{$product->image}}" alt="Product Image" />
 							</a>
 							<div class="product__item-add-cart-btn-outer">
-								<a href="{{url('/product-details/'.$product->id)}}" class="product__item-add-cart-btn-inner">
+								<a href="{{url('add-cart/'.$product->id)}}" class="product__item-add-cart-btn-inner">
 									Add to Cart
 								</a>
 							</div>
@@ -118,7 +118,7 @@
 							</div>
 						</div>
 						<div class="product__item-info-outer">
-							<a href="{{url('/product-details/'.$product->id)}}" class="product__item-name">
+							<a href="{{url('/product-details/'.$product->slug)}}" class="product__item-name">
 								{{$product->name}}
 							</a>
 							<div class="product__item-price-outer">
@@ -153,11 +153,11 @@
 					@foreach ($newProducts as $product)
 					<div class="product__item-outer">
 						<div class="product__item-image-outer">
-							<a href="{{url('/product-details/'.$product->id)}}" class="product__item-image-inner">
+							<a href="{{url('/product-details/'.$product->slug)}}" class="product__item-image-inner">
 								<img src="{{$product->image}}" alt="Product Image" />
 							</a>
 							<div class="product__item-add-cart-btn-outer">
-								<a href="{{url('/product-details/'.$product->id)}}" class="product__item-add-cart-btn-inner">
+								<a href="{{url('add-cart/'.$product->id)}}" class="product__item-add-cart-btn-inner">
 									Add to Cart
 								</a>
 							</div>
@@ -168,7 +168,7 @@
 							</div>
 						</div>
 						<div class="product__item-info-outer">
-							<a href="{{url('/product-details/'.$product->id)}}" class="product__item-name">
+							<a href="{{url('/product-details/'.$product->slug)}}" class="product__item-name">
 								{{$product->name}}
 							</a>
 							<div class="product__item-price-outer">
@@ -201,11 +201,11 @@
 					@foreach ($regularProducts as $product)
 						<div class="product__item-outer">
 						<div class="product__item-image-outer">
-							<a href="{{url('/product-details/'.$product->id)}}" class="product__item-image-inner">
+							<a href="{{url('/product-details/'.$product->slug)}}" class="product__item-image-inner">
 								<img src="{{$product->image}}" alt="Product Image" />
 							</a>
 							<div class="product__item-add-cart-btn-outer">
-								<a href="{{url('/product-details/'.$product->id)}}" class="product__item-add-cart-btn-inner">
+								<a href="{{url('add-cart/'.$product->id)}}" class="product__item-add-cart-btn-inner">
 									Add to Cart
 								</a>
 							</div>
@@ -216,7 +216,7 @@
 							</div>
 						</div>
 						<div class="product__item-info-outer">
-							<a href="{{url('/product-details/'.$product->id)}}" class="product__item-name">
+							<a href="{{url('/product-details/'.$product->slug)}}" class="product__item-name">
 								{{$product->name}}
 							</a>
 							<div class="product__item-price-outer">
@@ -249,11 +249,11 @@
 					@foreach ($discountProducts as $product)
 						<div class="product__item-outer">
 						<div class="product__item-image-outer">
-							<a href="{{url('/product-details/'.$product->id)}}" class="product__item-image-inner">
+							<a href="{{url('/product-details/'.$product->slug)}}" class="product__item-image-inner">
 								<img src="{{$product->image}}" alt="Product Image" />
 							</a>
 							<div class="product__item-add-cart-btn-outer">
-								<a href="{{url('/product-details/'.$product->id)}}" class="product__item-add-cart-btn-inner">
+								<a href="{{url('add-cart/'.$product->id)}}" class="product__item-add-cart-btn-inner">
 									Add to Cart
 								</a>
 							</div>
@@ -264,7 +264,7 @@
 							</div>
 						</div>
 						<div class="product__item-info-outer">
-							<a href="{{url('/product-details/'.$product->id)}}" class="product__item-name">
+							<a href="{{url('/product-details/'.$product->slug)}}" class="product__item-name">
 								{{$product->name}}
 							</a>
 							<div class="product__item-price-outer">
