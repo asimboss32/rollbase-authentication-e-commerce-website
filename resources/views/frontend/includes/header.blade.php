@@ -1,4 +1,3 @@
-
 <header class="header-section">
     <div class="container">
         <div class="header-top-wrapper">
@@ -6,7 +5,8 @@
                 <img src="{{ $globalSiteSettings->logo }}" alt="Logo">
             </a>
             <div class="search-form-outer">
-                <form action="" method="GET" class="form-group search-form">
+                <form action="{{ url('/search-products') }}" method="GET" class="form-group search-form">
+                    @csrf
                     <input type="text" name="search" class="form-control" placeholder="Search for items...">
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
@@ -39,46 +39,49 @@
                     <div class="header-top-right-item-link">
                         <span class="icon-outer">
                             <i class="fas fa-cart-plus"></i>
-                            <span class="count-number">{{$cartCount}}</span>
+                            <span class="count-number">{{ $cartCount }}</span>
                         </span>
                         Cart
                     </div>
                     <div class="cart-items-wrapper">
                         <div class="cart-items-outer">
                             @php
-                            $cartTotal = 0;
-                        @endphp
-                          @foreach ($globalCarts as $cart )
-                          @php
-                               $cartTotal = $cartTotal+$cart->price*$cart->qty;
+                                $cartTotal = 0;
                             @endphp
+                            @foreach ($globalCarts as $cart)
+                                @php
+                                    $cartTotal = $cartTotal + $cart->price * $cart->qty;
+                                @endphp
                                 <div class="cart-item-outer">
-                                <a href="{{url('/product-details/'.$cart->product->slug)}}" class="cart-product-image">
-                                    <img src="{{$cart->product->image}}" alt="product">
-                                </a>
-                                <div class="cart-product-name-price">
-                                    <a href="{{url('/product-details/'.$cart->product->slug)}}" class="product-name">
-                                       {{$cart->product->name}}
+                                    <a href="{{ url('/product-details/' . $cart->product->slug) }}"
+                                        class="cart-product-image">
+                                        <img src="{{ $cart->product->image }}" alt="product">
                                     </a>
-                                    <span class="product-price">
-                                        ৳ {{$cart->price}} x {{$cart->qty}} = ৳ {{$cart->price*$cart->qty}}
-                                    </span>
+                                    <div class="cart-product-name-price">
+                                        <a href="{{ url('/product-details/' . $cart->product->slug) }}"
+                                            class="product-name">
+                                            {{ $cart->product->name }}
+                                        </a>
+                                        <span class="product-price">
+                                            ৳ {{ $cart->price }} x {{ $cart->qty }} = ৳
+                                            {{ $cart->price * $cart->qty }}
+                                        </span>
+                                    </div>
+                                    <div class="cart-item-delete">
+                                        <a href="{{ url('/delete-cart/' . $cart->id) }}" class="delete-btn">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="cart-item-delete">
-                                    <a href="{{ url('/delete-cart/'.$cart->id) }}" class="delete-btn">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </div>
-                            </div>
-                          @endforeach
-                            
-                            
+                            @endforeach
+
+
                         </div>
-                        
+
                         <div class="shopping-cart-footer">
                             <div class="shopping-cart-total">
                                 <h4>
-                                    Total <span>৳ {{$cartTotal}}</span>
+                                    Total <span>৳ {{ $cartTotal }}</span>
                                 </h4>
                             </div>
                             <div class="shopping-cart-button">
@@ -87,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                     
+
                 </div>
             </div>
         </div>
@@ -103,24 +106,25 @@
                         </div>
                         <div class="header__category-items-outer">
                             <ul class="header__category-list">
-                                <li class="header__category-list-item item-has-submenu">
-                                    @foreach ($categoriesGlobal as $category)
-                                        <a href="{{ url('/category-products') }}" class="header__category-list-item-link">
-                                        <img src="{{ $category->image }}" alt="category">
-                                        {{ $category->name }}
-                                    </a>
-                                    @endforeach
-                                    <ul class="header__nav-item-category-submenu">
-                                        <li class="header__category-submenu-item">
-                                           @foreach ($subCategoriesGlobal as $subCategory)
-                                                <a href="{{ url('/subcategory-products') }}"
-                                                class="header__category-submenu-item-link">
-                                                {{ $subCategory->name }}
-                                            </a>
-                                           @endforeach
-                                        </li>
-                                    </ul>
-                                </li>
+                                @foreach ($categoriesGlobal as $category)
+                                    <li class="header__category-list-item item-has-submenu">
+                                        <a href="{{ url('/category-products/' . $category->slug) }}"
+                                            class="header__category-list-item-link">
+                                            <img src="{{ $category->image }}" alt="category">
+                                            {{ $category->name }}
+                                        </a>
+                                        <ul class="header__nav-item-category-submenu">
+                                            @foreach ($category->subCategory as $subCategory)
+                                                <li class="header__category-submenu-item">
+                                                    <a href="{{ url('/subcategory-products/' . $subCategory->slug) }}"
+                                                        class="header__category-submenu-item-link">
+                                                        {{ $subCategory->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>

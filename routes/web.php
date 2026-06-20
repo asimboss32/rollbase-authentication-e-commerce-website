@@ -38,14 +38,17 @@ Route::post('/contact-messages/store', [FrontendController::class, 'contactMessa
 Route::get('/view-cart',[FrontendController::class,'viewCart']);
 Route::get('/checkout',[FrontendController::class,'checkOut']);
 Route::get('/order-confirmation',[FrontendController::class,'orderConfirmation']);
-Route::get('/category-products',[FrontendController::class,'categoryProducts']);
-Route::get('/subcategory-products',[FrontendController::class,'subCategoryProducts']);
+Route::get('/category-products/{slug}',[FrontendController::class,'categoryProducts']);
+Route::get('/subcategory-products/{slug}',[FrontendController::class,'subCategoryProducts']);
 Route::get('/type-products/{type}',[FrontendController::class,'typeProducts']);
+Route::get('/search-products',[FrontendController::class,'searchProducts']);
 
 //order routes
 Route::post('add-cart-details/{id}',[FrontendController::class,'addToCartDetailsPage']);
 Route::get('add-cart/{id}',[FrontendController::class,'addToCart']);
 Route::get('/delete-cart/{id}', [FrontendController::class, 'deleteCart']);
+Route::post('/customer-order-store', [FrontendController::class, 'orderStore']);
+Route::get('/order-confirmation/{invoice_id}', [FrontendController::class, 'orderConfirmation']);
 
 //Login and Register Routes
 

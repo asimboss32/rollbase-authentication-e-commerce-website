@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\ContactMessage;
+use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\Product;
+use App\Models\SubCategory;
 use App\Models\WebsitePolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,9 +26,19 @@ class FrontendController extends Controller
         return view('frontend.index', compact('hotProducts', 'newProducts', 'regularProducts', 'discountProducts'));
     }
 
-    public function shopProducts()
-    {
-        return view('frontend.shop');
+    public function shopProducts(Request $request)
+     {
+        if(isset($request->cat_id)){
+            $products = Product::orderBy('id', 'desc')->where('cat_id', $request->cat_id)->paginate(50);
+        }
+        elseif(isset($request->subcat_id)){
+            $products = Product::orderBy('id', 'desc')->where('subcat_id', $request->subcat_id)->paginate(50);
+        }
+        else{
+            $products = Product::orderBy('id', 'desc')->paginate(50);
+        }
+
+        return view('frontend.shop', compact('products'));
     }
 
     public function productDetails($slug)
@@ -204,23 +217,85 @@ class FrontendController extends Controller
         return view('frontend.checkout');
     }
 
-    public function orderConfirmation()
+    public function orderStore(Request $request)
     {
-        return view('frontend.thankyou');
+        $order = new Order();
+
+        $order->ip_address = $request->ip();
+        $order->user_id = auth()->check() ? auth()->user()->id : null;
+        
+        $previousOrder = Order::orderBy('id', 'desc')->first();
+
+        if($previousOrder == null){
+            $generatedInvoiceId = 'XYZ-1';
+            $order->invoice_number = $generatedInvoiceId;
+        }
+        elseif($previousOrder != null){
+             $generatedInvoiceId = 'XYZ-' . ($previousOrder->id+1);
+             $order->invoice_number = $generatedInvoiceId;
+        }
+
+        $order->name = $request->name;
+        $order->phone = $request->phone;
+        $order->address = $request->address;
+        $order->charge = $request->charge;
+        $order->price = $request->grandTotalPriceInput;
+
+        $cartProducts = Cart::where('ip_address', $request->ip())->get();
+
+        if($cartProducts->isNotEmpty()){
+            $order->save();
+
+            foreach($cartProducts as $cart){
+                $orderDetails = new OrderDetails();
+                $orderDetails->order_id = $order->id;
+                $orderDetails->product_id = $cart->product_id;
+                $orderDetails->color = $cart->color;
+                $orderDetails->size = $cart->size;
+                $orderDetails->qty = $cart->qty;
+                $orderDetails->price = $cart->price;
+
+                $orderDetails->save();
+                $cart->delete();
+            }
+
+            return redirect('/order-confirmation/'.$generatedInvoiceId);
+        }
+            else{
+                toastr()->error('Your cart is empty. Please add products to cart before placing an order.');
+                return redirect('/shop');
+            }
     }
 
-    public function categoryProducts()
+    public function orderConfirmation( $invoice_id)
     {
-        return view('frontend.category-products');
+        return view('frontend.thankyou', compact('invoice_id'));
     }
 
-    public function subCategoryProducts()
+    public function categoryProducts($slug)
     {
-        return view('frontend.subcategory-products');
+        $category = Category::where('slug', $slug)->select('id')->first();
+        $products = Product::where('cat_id', $category->id)->get();
+        return view('frontend.category-products', compact('products'));
     }
 
-    public function typeProducts()
+    public function subCategoryProducts($slug)
     {
-        return view('frontend.type-products');
+        $subCategory = SubCategory::where('slug', $slug)->select('id')->first();
+        $products = Product::where('subcat_id', $subCategory->id)->get();
+        return view('frontend.subcategory-products', compact('products'));
     }
+
+    public function typeProducts($type)
+    {
+        $products = Product::where('product_type', $type)->orderBy('id', 'desc')->get();
+        return view('frontend.type-products', compact('products', 'type'));
+    }
+
+    public function searchProducts(Request $request)
+    {
+        $products = Product::where('name', 'LIKE', '%'. $request->search . '%')->get();
+        return view('frontend.search-products', compact('products'));
+    }
+
 }
