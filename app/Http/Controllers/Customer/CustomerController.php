@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,14 @@ class CustomerController extends Controller
 {
      public function dashboard()
     {
-        return view('customer.customer-dashboard');
+       $allOrders = Order::where('user_id', Auth::user()->id)->count();
+        $pendingOrders = Order::where('user_id', Auth::user()->id)->where('status', 'pending')->count();
+        $confirmedOrders = Order::where('user_id', Auth::user()->id)->where('status', 'confirmed')->count();
+        $deliveredOrders = Order::where('user_id', Auth::user()->id)->where('status', 'delivered')->count();
+        $returnedOrders = Order::where('user_id', Auth::user()->id)->where('status', 'returned')->count();
+        $cancelledOrders = Order::where('user_id', Auth::user()->id)->where('status', 'cancelled')->count();
+        return view('customer.customer-dashboard', compact('allOrders', 'pendingOrders', 'confirmedOrders',
+        'deliveredOrders', 'returnedOrders', 'cancelledOrders'));
     }
 
     public function customerLogout()
@@ -98,4 +106,24 @@ class CustomerController extends Controller
         toastr()->success('Credentials Updated Successfully');
         return redirect()->back();
     }
+  public function customerOrders($status)
+  {
+        if($status == 'all'){
+            $orders = Order::with('orderDetails')->orderBy('id', 'desc')->where('user_id', Auth::user()->id)->get();
+        }
+        else{
+            $orders = Order::with('orderDetails')->orderBy('id', 'desc')->where('status',$status)->where('user_id', Auth::user()->id)->get();
+        }
+    return view('customer.orders.list', compact('orders'));
+  }
+  public function customerOrderCancel($id)
+  {
+    $order = Order::find($id);
+
+    $order->status = 'canceled';
+    $order->save();
+
+    toastr()->success('Order Canceled Successfully');
+    return redirect()->back();
+  }
 }

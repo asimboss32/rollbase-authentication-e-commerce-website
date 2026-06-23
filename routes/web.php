@@ -117,6 +117,10 @@ route::middleware(['role:customer'])->group(function(){
     route::get('/customer/credentials-view',[CustomerController::class,'customerCredentialsView']);
     route::post('/customer/credentials-update',[CustomerController::class,'customerCredentialsUpdate']);
 
+    //orders
+    Route::get('/customer/orders/{status}', [CustomerController::class, 'customerOrders']);
+    route::get('/customer/order-cancel/{id}', [CustomerController::class, 'customerOrderCancel']);
+
 });
 
 Route::middleware(['role:employee,admin'])->group(function(){
